@@ -28,18 +28,37 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
-INSTALLED_APPS = [
+
+# Application definition
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+)
+
+THIRD_PARTY_APPS = (
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+)
+
+MY_NOTES_APPS = (
+    'main.apps.MainConfig',
+    'notes_auth.apps.NotesAuthConfig',
+)
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MY_NOTES_APPS
+
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +67,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 ROOT_URLCONF = 'my_notes.urls'
 
