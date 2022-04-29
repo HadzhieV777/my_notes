@@ -8,10 +8,14 @@ class NoteForListSerializer(serializers.ModelSerializer):
         model = Note
         fields = ('id', 'title')
 
-class NoteForCreateSerializer(serializers.ModelSerializer):
+class NoteFullSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ('id', 'title', 'description', 'category')
+        fields = ('id', 'title', 'description', 'category', 'is_done')
+    
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
 
 class CategoryForListSerializer(serializers.ModelSerializer):
     class Meta:
